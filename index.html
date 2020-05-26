@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="CoffeeCup HTML Editor (www.coffeecup.com)">
+    <meta name="dcterms.created" content="Fri, 07 Jun 2019 18:35:44 GMT">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>Clock</title>
+  </head>
+  <body>
+<h1> DIGITAL CLOCK</H1>
+	<canvas id="canvas" height="400" width="400" style="border:2px solid red;background-color:khaki;">sorry! not gonna run...</canvas>
+	<script>
+	var canvas =document.getElementById("canvas");
+	ctx=canvas.getContext("2d");
+	var radius=canvas.height/2;
+    ctx.translate(radius,radius);
+    radius*=0.95;
+    //drawClock(ctx,radius);
+	setInterval(drawClock,1000);
+	function drawClock()
+	{
+	drawFace(ctx,radius);
+    drawNumbers(ctx,radius);
+    drawTime(ctx,radius);
+	}
+	function drawFace()
+	{
+	ctx.beginPath();
+    ctx.arc(0,0,radius,0,2*Math.PI);
+    ctx.fillStyle="white";
+    ctx.fill();
+    grd=ctx.createRadialGradient(0,0,radius*0.95, 0,0,radius*1.05);
+    grd.addColorStop(0,"magenta");
+    grd.addColorStop(0.5,"white");
+    grd.addColorStop(1,"blue");
+    ctx.lineWidth=radius*0.1;
+    ctx.strokeStyle=grd;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(0,0,radius*.05,0,2*Math.PI);
+    ctx.stroke();
+    }
+    function drawNumbers(ctx,radius)
+    {
+    var ang;
+    ctx.font = radius*0.15 + "px arial";
+    ctx.textAlign="center";
+    ctx.fillStyle="black";
+    for( var num=1;num<13;num++)
+   {
+	ang=num * Math.PI / 6;
+    ctx.rotate(ang);
+    ctx.translate(0,-radius*.85);
+    ctx.rotate(-ang);
+    ctx.textBaseline="middle";
+    ctx.fillText(num.toString(),0,0);
+    ctx.rotate(ang);
+    ctx.translate(0,radius*.85);
+    ctx.rotate(-ang);
+    }
+    }
+    function drawTime(ctx,radius)
+    {
+ 		var now=new Date();
+        hour=now.getHours();
+        min=now.getMinutes();
+        sec=now.getSeconds();
+        hour=hour%12;
+        hour=hour*Math.PI/6 + min*Math.PI/(6*60) + sec*Math.PI/(360*60);
+        drawHand(hour,radius*.08,radius*.6,ctx);
+        min=min*Math.PI/(30) + sec*Math.PI/(30*60);
+        drawHand(min,radius*.05,radius*.8,ctx);
+        ctx.strokeStyle="red";
+        ctx.beginPath();
+        ctx.arc(0,0,radius*0.03,0,2*Math.PI);
+        ctx.stroke();
+        sec=sec*Math.PI/(30);
+        drawHand(sec,radius*.02,radius*.7,ctx);
+
+
+        }
+        function drawHand(ang,width,length,ctx)
+        {
+		 ctx.beginPath();
+    ctx.lineWidth = width;
+    ctx.lineCap = "round";
+    ctx.moveTo(0,0);
+    ctx.rotate(ang);
+    ctx.lineTo(0, -length);
+    ctx.stroke();
+    ctx.rotate(-ang);
+}
+	</script>
+	
+  </body>
+</html>
